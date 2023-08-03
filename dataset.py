@@ -17,12 +17,12 @@ class VimeoDataset(Dataset):
         self.w = 448
         self.data_root = path
         self.image_root = os.path.join(self.data_root, 'sequences')
-        train_fn = os.path.join(self.data_root, 'tri_trainlist.txt')
-        test_fn = os.path.join(self.data_root, 'tri_testlist.txt')
-        with open(train_fn, 'r') as f:
-            self.trainlist = f.read().splitlines()
-        with open(test_fn, 'r') as f:
-            self.testlist = f.read().splitlines()                                                    
+        # train_fn = os.path.join(self.data_root, 'tri_trainlist.txt')
+        # test_fn = os.path.join(self.data_root, 'tri_testlist.txt')
+        # with open(train_fn, 'r') as f:
+        #     self.trainlist = f.read().splitlines()
+        # with open(test_fn, 'r') as f:
+        #     self.testlist = f.read().splitlines()
         self.load_data()
 
     def __len__(self):
@@ -30,9 +30,13 @@ class VimeoDataset(Dataset):
 
     def load_data(self):
         if self.dataset_name != 'test':
-            self.meta_data = self.trainlist
+            self.meta_data = os.listdir(os.path.join(self.data_root, 'train_10k'))
+
+            # self.meta_data = self.trainlist
         else:
-            self.meta_data = self.testlist
+            self.meta_data = os.listdir(os.path.join(self.data_root, 'test_2k_540p'))
+
+            # self.meta_data = self.testlist
 
     def aug(self, img0, gt, img1, h, w):
         ih, iw, _ = img0.shape
@@ -45,7 +49,7 @@ class VimeoDataset(Dataset):
 
     def getimg(self, index):
         imgpath = os.path.join(self.image_root, self.meta_data[index])
-        imgpaths = [imgpath + '/im1.png', imgpath + '/im2.png', imgpath + '/im3.png']
+        imgpaths = [imgpath + '/frame1.jpg', imgpath + '/frame2.jpg', imgpath + '/frame3.jpg']
         
         img0 = cv2.imread(imgpaths[0])
         gt = cv2.imread(imgpaths[1])
