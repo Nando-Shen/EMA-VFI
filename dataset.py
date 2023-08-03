@@ -31,10 +31,11 @@ class VimeoDataset(Dataset):
     def load_data(self):
         if self.dataset_name != 'test':
             self.meta_data = os.listdir(os.path.join(self.data_root, 'train_10k'))
-
+            self.image_root = os.path.join(self.image_root, 'train_10k')
             # self.meta_data = self.trainlist
         else:
             self.meta_data = os.listdir(os.path.join(self.data_root, 'test_2k_540p'))
+            self.image_root = os.path.join(self.image_root, 'test_2k_540p')
 
             # self.meta_data = self.testlist
 
