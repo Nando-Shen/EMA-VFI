@@ -63,6 +63,8 @@ for i in f:
     mid = mid.detach().cpu().numpy().transpose(1, 2, 0)
     I1 = I1 / 255.
     psnr = -10 * math.log10(((I1 - mid) * (I1 - mid)).mean())
+    os.makedirs('/home/curry/jshe2377/test/' + name)
+    cv2.imwrite(r"/home/curry/jshe2377/test/"+name+"emavfi.jpg", mid)
     psnr_list.append(psnr)
     ssim_list.append(ssim)
 
