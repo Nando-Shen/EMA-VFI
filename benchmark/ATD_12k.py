@@ -56,6 +56,7 @@ for i in f:
     I0 = cv2.imread(path + '/test_2k_540p/' + name + '/frame1.jpg')
     I1 = cv2.imread(path + '/test_2k_540p/' + name + '/frame2.jpg')
     I2 = cv2.imread(path + '/test_2k_540p/' + name + '/frame3.jpg') # BGR -> RBG
+
     I0 = (torch.tensor(I0.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     I2 = (torch.tensor(I2.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     mid = model.inference(I0, I2, TTA=TTA, fast_TTA=TTA)[0]
@@ -64,6 +65,7 @@ for i in f:
     I1 = I1 / 255.
     psnr = -10 * math.log10(((I1 - mid) * (I1 - mid)).mean())
     os.makedirs('/home/curry/jshe2377/test/' + name)
+    mid = mid * 255.
     cv2.imwrite(r"/home/curry/jshe2377/test/"+name+"emavfi.jpg", mid)
     psnr_list.append(psnr)
     ssim_list.append(ssim)
