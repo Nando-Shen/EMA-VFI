@@ -51,12 +51,15 @@ f = os.listdir(os.path.join(path, 'test_2k_540p'))
 psnr_list, ssim_list = [], []
 for i in f:
     name = str(i).strip()
+    size = (384, 192)
     if(len(name) <= 1):
         continue
     I0 = cv2.imread(path + '/test_2k_540p/' + name + '/frame1.jpg')
     I1 = cv2.imread(path + '/test_2k_540p/' + name + '/frame2.jpg')
     I2 = cv2.imread(path + '/test_2k_540p/' + name + '/frame3.jpg') # BGR -> RBG
-
+    I0 = cv2.resize(I0, size)
+    I1 = cv2.resize(I1, size)
+    I2 = cv2.resize(I2, size)
     I0 = (torch.tensor(I0.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     I2 = (torch.tensor(I2.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     mid = model.inference(I0, I2, TTA=TTA, fast_TTA=TTA)[0]
