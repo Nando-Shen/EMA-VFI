@@ -14,7 +14,6 @@ torch.set_grad_enabled(False)
 sys.path.append('.')
 import config as cfg
 from Trainer import Model
-from benchmark.utils.pytorch_msssim import ssim_matlab
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', default='ours', type=str)
@@ -63,15 +62,15 @@ for i in f:
     I0 = (torch.tensor(I0.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     I2 = (torch.tensor(I2.transpose(2, 0, 1)).cuda() / 255.).unsqueeze(0)
     mid = model.inference(I0, I2, TTA=TTA, fast_TTA=TTA)[0]
-    ssim = ssim_matlab(torch.tensor(I1.transpose(2, 0, 1)).cuda().unsqueeze(0) / 255., mid.unsqueeze(0)).detach().cpu().numpy()
+    # ssim = ssim_matlab(torch.tensor(I1.transpose(2, 0, 1)).cuda().unsqueeze(0) / 255., mid.unsqueeze(0)).detach().cpu().numpy()
     mid = mid.detach().cpu().numpy().transpose(1, 2, 0)
     I1 = I1 / 255.
     psnr = -10 * math.log10(((I1 - mid) * (I1 - mid)).mean())
-    os.makedirs('/home/curry/jshe2377/test/' + name)
+    os.makedirs('/home/curry/jshe2377/ematest/' + name)
     mid = mid * 255.
-    cv2.imwrite(r"/home/curry/jshe2377/test/"+name+"emavfi.jpg", mid)
+    cv2.imwrite(r"/home/curry/jshe2377/emavfi/"+name+"/emavfi.png", mid)
     psnr_list.append(psnr)
-    ssim_list.append(ssim)
+    # ssim_list.append(ssim)
 
 
     print("Avg PSNR: {} SSIM: {}".format(np.mean(psnr_list), np.mean(ssim_list)))
