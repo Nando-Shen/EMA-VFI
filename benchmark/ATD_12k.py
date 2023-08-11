@@ -66,7 +66,7 @@ for i in f:
     mid = mid.detach().cpu().numpy().transpose(1, 2, 0)
     I1 = I1 / 255.
     psnr = -10 * math.log10(((I1 - mid) * (I1 - mid)).mean())
-    os.makedirs('/home/curry/jshe2377/ematest/' + name)
+    os.makedirs('/home/curry/jshe2377/emavfi/' + name)
     mid = mid * 255.
     cv2.imwrite(r"/home/curry/jshe2377/emavfi/"+name+"/emavfi.png", mid)
     psnr_list.append(psnr)
